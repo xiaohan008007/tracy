@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+    http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+    http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd">
+
+	<context:property-placeholder location="classpath:config/config.properties"  ignore-unresolvable="true"/>
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.taotaosou.qly" />
+		<import resource="applicationContext-engine.xml" />
+	<bean id="dataSource1" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>${jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+		<property name="validationQuery">
+			<value>${jdbc.validationQuery}</value>
+		</property>
+		<property name="testOnBorrow">
+			<value>${jdbc.testOnBorrow}</value>
+		</property>
+		<property name="initialSize">
+			<value>${jdbc.initialSize}</value>
+		</property>
+		<property name="maxIdle">
+			<value>${jdbc.maxIdle}</value>
+		</property>
+	</bean>
+	
+	<bean id="dataSource2" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>${jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc_spider_deploy.url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc_spider_deploy.username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc_spider_deploy.password}</value>
+		</property>
+		<property name="validationQuery">
+			<value>${jdbc_spider_deploy.validationQuery}</value>
+		</property>
+		<property name="testOnBorrow">
+			<value>${jdbc_spider_deploy.testOnBorrow}</value>
+		</property>
+		<property name="initialSize">
+			<value>${jdbc_spider_deploy.initialSize}</value>
+		</property>
+		<property name="maxIdle">
+			<value>${jdbc_spider_deploy.maxIdle}</value>
+		</property>
+	</bean>	
+	
+	<!-- 事务控制器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource1" />
+	</bean>
+
+<!-- 用于编程式事务管理 暂不用 -->
+	<bean id="transactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<constructor-arg ref="transactionManager" />
+	</bean>
+	
+<!-- ===============================================第一种申明式事务   XML配置 -->	
+<!-- 定义事务通知 -->  
+<tx:advice id="txAdvice" transaction-manager="transactionManager">  
+    <!-- 定义方法的过滤规则 -->  
+    <tx:attributes>  
+        <!-- save开头所有方法都使用事务 -->  
+        <tx:method name="save*" propagation="REQUIRED"/>  
+        <!-- 定义所有get开头的方法都是只读的 -->  
+        <tx:method name="get*" read-only="true"/>  
+    </tx:attributes>  
+</tx:advice>  
+  
+<!-- 定义AOP配置 -->  
+<aop:config>  
+    <!-- 定义一个切入点 -->  
+    <aop:pointcut expression="execution (* com.iflysse.school.services.impl.*.*(..))" id="services"/>  
+    <!-- 对切入点和事务的通知，进行适配 -->  
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="services"/>  
+</aop:config>  
+<!-- ===============================================第二种申明式事务   注解式 -->	
+
+<!-- 声明使用注解式事务 -->  
+<tx:annotation-driven transaction-manager="transactionManager"/>
+
+<!--  Java代码中@Transactional示例
+
+/** 
+ * @author ZYWANG 2011-3-24 
+ */  
+@Service  
+@Transactional(propagation = Propagation.REQUIRED)  
+public class TeacherServicesImpl implements TeacherServices {  
+    @Autowired  
+    TeacherDao dao = null;  
+  
+    public TeacherDao getDao() {  
+        return dao;  
+    }  
+  
+    public void setDao(TeacherDao dao) {  
+        this.dao = dao;  
+    }  
+  
+    @Override  
+    @Transactional(readOnly=true,propagation=Propagation.NEVER)  
+    public List<Teacher> getAllTeachers() {  
+        return getDao().getAllTeachers();  
+    }  
+  
+    @Override  
+    public void addTeacher(Teacher teacher) {  
+        if(teacher.getId() > 0){  
+            getDao().updateTeacher(teacher);  
+        }else{  
+            getDao().addTeacher(teacher);  
+        }  
+    }  
+} -->
+<!-- ===============================================第二种申明式事务  END -->	
+
+	<!-- IBATIS 的映射文件配置 -->
+	<bean id="sqlMapDB1" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation">
+			<value>classpath:config/ibatis/sqlMapConfig.xml</value>
+		</property>
+		<property name="dataSource">
+			<ref local="dataSource1" />
+		</property>
+	</bean>
+	
+	<bean id="sqlMapDB2" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation">
+			<value>classpath:config/ibatis/sqlMapConfig_spider_deploy.xml</value>
+		</property>
+		<property name="dataSource">
+			<ref local="dataSource2" />
+		</property>
+	</bean>
+	
+	<!-- 类目库 start -->
+	<bean id="dataSourceConfig" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		abstract="false" scope="singleton" lazy-init="default" autowire="default"
+		destroy-method="close">
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="${jdbc1.url}" />
+		<property name="user" value="${jdbc1.username}" />
+		<property name="password" value="${jdbc1.password}" />
+		<property name="minPoolSize" value="${jdbc1.minPoolSize}" />
+		<property name="maxPoolSize" value="${jdbc1.maxPoolSize}" />
+		<property name="maxIdleTime" value="${jdbc1.maxIdleTime}" />
+		<property name="initialPoolSize" value="${jdbc1.initialPoolSize}" />
+		<property name="numHelperThreads" value="${jdbc1.numHelperThreads}" />
+	</bean>
+
+	<bean id="sqlMapDBConfig" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation">
+			<value>classpath:config/ibatis/sqlMapConfig.xml</value>
+		</property>
+		<property name="dataSource">
+			<ref local="dataSourceConfig" />
+		</property>
+	</bean>
+	<!-- 类目库 end -->
+	
+	<!-- taobao店铺类目库 start -->
+    <bean id="dataSourceSpiderTaobao" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		abstract="false" scope="singleton" lazy-init="default" autowire="default"
+		destroy-method="close">
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="${jdbc_spider_taobao.url}" />
+		<property name="user" value="${jdbc_spider_taobao.username}" />
+		<property name="password" value="${jdbc_spider_taobao.password}" />
+		<property name="minPoolSize" value="${jdbc1.minPoolSize}" />
+		<property name="maxPoolSize" value="${jdbc1.maxPoolSize}" />
+		<property name="maxIdleTime" value="${jdbc1.maxIdleTime}" />
+		<property name="initialPoolSize" value="${jdbc1.initialPoolSize}" />
+		<property name="numHelperThreads" value="${jdbc1.numHelperThreads}" />
+	</bean>
+	<bean id="sqlMapDBSpiderTaobao" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation">
+			<value>classpath:config/ibatis/sqlMapConfig.xml</value>
+		</property>
+		<property name="dataSource">
+			<ref local="dataSourceSpiderTaobao" />
+		</property>
+	</bean>
+	<!-- taobao店铺类目库 end -->
+
+	<!-- 数据库路由规则配置 -->
+	<bean id="dbRouteConfig" class="com.taotaosou.common.persistence.router.DBRouteConfig">
+		<property name="sqlMapList">
+			<map>
+				<entry key="db1">
+					<ref local="sqlMapDB1" />
+				</entry>
+				<entry key="db2">
+					<ref local="sqlMapDB2" />
+				</entry>
+				<entry key="configDB">
+					<ref local="sqlMapDBConfig" />
+				</entry>
+				<entry key="taobaoDB">
+				    <ref local="sqlMapDBSpiderTaobao" />
+				</entry>
+			</map>
+		</property>
+		<property name="defaultNodeNameList">
+			<list>
+				<value>db1</value>
+			</list>
+		</property>
+	</bean>
+	
+	
+ 
+</beans>

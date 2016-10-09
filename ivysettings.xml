@@ -1,0 +1,33 @@
+<!--author: Archibald Wang -->
+<!--date:2011-04-21 -->
+<ivysettings>
+	<property name="repo.urlbase" value="http://199.155.122.167:8081/nexus/content"/>
+	<properties file="http://199.155.122.167/devconf/ivysettings-file.properties"/>
+    <settings defaultResolver="default"/>
+    <credentials host="199.155.122.167"
+        realm="Sonatype Nexus Repository Manager" 
+        username="${user.name}"  passwd="${user.passwd}" />
+    <resolvers>
+        <chain name="default" returnFirst="true">
+            <url name="inner-snapshot" m2compatible="true" checkconsistency="false">
+                <ivy pattern="${repo.urlbase}/repositories/snapshots/[organisation]/[module]/snapshot/ivy-snapshot.xml" />
+				<artifact pattern="${repo.urlbase}/repositories/snapshots/[organisation]/[module]/snapshot/[artifact]-SNAPSHOT-[type](-[classifier]).[ext]" />
+            </url>
+            <url name="inner-release" m2compatible="true">
+                <ivy pattern="${repo.urlbase}/repositories/releases/[organisation]/[module]/[revision]/ivy-[revision].xml" />
+                <artifact pattern="${repo.urlbase}/repositories/releases/[organisation]/[module]/[revision]/[artifact]-[revision]-[type](-[classifier]).[ext]" />
+            </url>
+            <ibiblio name="public" m2compatible="true" 
+                root="${repo.urlbase}/groups/public/"
+                />
+        </chain>
+        <url name="share-snapshot" m2compatible="true">
+            <ivy pattern="${repo.urlbase}/repositories/snapshots/[organisation]/[module]/snapshot/ivy-snapshot.xml" />
+            <artifact pattern="${repo.urlbase}/repositories/snapshots/[organisation]/[module]/snapshot/[artifact]-SNAPSHOT-[type].[ext]" />
+        </url>
+        <url name="share-release" m2compatible="true">
+            <ivy pattern="${repo.urlbase}/repositories/releases/[organisation]/[module]/[revision]/ivy-[revision].xml" />
+            <artifact pattern="${repo.urlbase}/repositories/releases/[organisation]/[module]/[revision]/[artifact]-[revision]-[type].[ext]" />
+        </url>
+    </resolvers>
+</ivysettings>

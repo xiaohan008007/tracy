@@ -1,0 +1,79 @@
+AbstractList, modCount, int, protected transient
+AbstractMap, keySet, java.util.Set, private transient
+AbstractMap, values, java.util.Collection, private transient
+ArrayList, elementData, [Ljava.lang.Object;, private transient
+ArrayList, size, int, private
+BitSet, ADDRESS_BITS_PER_UNIT, int, private static final
+BitSet, BITS_PER_UNIT, int, private static final
+BitSet, BIT_INDEX_MASK, int, private static final
+BitSet, bits, [J, private
+BitSet, unitsInUse, int, private transient
+BitSet, serialVersionUID, long, private static final
+Collections, r, java.util.Random, private static
+Collections, EMPTY_SET, java.util.Set, public static final
+Collections, EMPTY_LIST, java.util.List, public static final
+Collections, EMPTY_MAP, java.util.Map, public static final
+Collections, REVERSE_ORDER, java.util.Comparator, private static final
+HashMap, table, [Ljava.util.HashMap$Entry;, private transient
+HashMap, count, int, private transient
+HashMap, threshold, int, private
+HashMap, loadFactor, float, private
+HashMap, modCount, int, private transient
+HashMap, keySet, java.util.Set, private transient
+HashMap, entrySet, java.util.Set, private transient
+HashMap, values, java.util.Collection, private transient
+HashMap, KEYS, int, private static final
+HashMap, VALUES, int, private static final
+HashMap, ENTRIES, int, private static final
+HashMap, emptyHashIterator, java.util.HashMap$EmptyHashIterator, private static
+HashMap, serialVersionUID, long, private static final
+HashSet, map, java.util.HashMap, private transient
+HashSet, PRESENT, java.lang.Object, private static final
+Hashtable, table, [Ljava.util.Hashtable$Entry;, private transient
+Hashtable, count, int, private transient
+Hashtable, threshold, int, private
+Hashtable, loadFactor, float, private
+Hashtable, modCount, int, private transient
+Hashtable, serialVersionUID, long, private static final
+Hashtable, keySet, java.util.Set, private transient
+Hashtable, entrySet, java.util.Set, private transient
+Hashtable, values, java.util.Collection, private transient
+Hashtable, KEYS, int, private static final
+Hashtable, VALUES, int, private static final
+Hashtable, ENTRIES, int, private static final
+Hashtable, emptyEnumerator, java.util.Hashtable$EmptyEnumerator, private static
+Hashtable, emptyIterator, java.util.Hashtable$EmptyIterator, private static
+LinkedList, header, java.util.LinkedList$Entry, private transient
+LinkedList, size, int, private transient
+LinkedList, serialVersionUID, long, private static final
+Properties, serialVersionUID, long, private static final
+Properties, defaults, java.util.Properties, protected
+Properties, keyValueSeparators, java.lang.String, private static final
+Properties, strictKeyValueSeparators, java.lang.String, private static final
+Properties, specialSaveChars, java.lang.String, private static final
+Properties, whiteSpaceChars, java.lang.String, private static final
+Properties, hexDigit, [C, private static final
+Stack, serialVersionUID, long, private static final
+TreeMap, comparator, java.util.Comparator, private
+TreeMap, root, java.util.TreeMap$Entry, private transient
+TreeMap, size, int, private transient
+TreeMap, modCount, int, private transient
+TreeMap, keySet, java.util.Set, private transient
+TreeMap, entrySet, java.util.Set, private transient
+TreeMap, values, java.util.Collection, private transient
+TreeMap, KEYS, int, private static final
+TreeMap, VALUES, int, private static final
+TreeMap, ENTRIES, int, private static final
+TreeMap, RED, boolean, private static final
+TreeMap, BLACK, boolean, private static final
+TreeMap, serialVersionUID, long, private static final
+TreeSet, m, java.util.SortedMap, private transient
+TreeSet, keySet, java.util.Set, private transient
+TreeSet, PRESENT, java.lang.Object, private static final
+Vector, elementData, [Ljava.lang.Object;, protected
+Vector, elementCount, int, protected
+Vector, capacityIncrement, int, protected
+Vector, serialVersionUID, long, private static final
+WeakHashMap, hash, java.util.Map, private
+WeakHashMap, queue, java.lang.ref.ReferenceQueue, private
+WeakHashMap, entrySet, java.util.Set, private

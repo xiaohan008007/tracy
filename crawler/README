@@ -1,0 +1,9 @@
+1. 确保当前系统的默认python版本为2.7
+   
+2. 将crawler.zip解压，确保所有.py和.sh文件都有可执行权限。
+   以下称crawler目录为%CLAWLER_HOME%
+   
+3. 修改run.sh中的%CLAWLER_HOME%为实际的crawler目录路径
+
+4. 创建如下crontab（将%CLAWLER_HOME%替换为实际的crawler目录路径）：
+	1 0 * * * %CLAWLER_HOME%/run.sh

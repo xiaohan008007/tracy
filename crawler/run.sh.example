@@ -1,0 +1,12 @@
+!/bin/bash
+
+# set environment virable
+export PATH=/home/app/local/bin:$PATH
+export LD_LIBRARY_PATH=/home/app/local/lib:$LD_LIBRARY_PATH
+export PYTHONPATH=/home/app/local/lib/python2.7/site-packages:$PYTHONPATH
+alias python='/home/app/local/bin/python'
+alias python24='/usr/bin/python'
+
+cd /home/app/pythonscript/crawler
+python Crawler.py && echo "\n[SUCCESS] Please check $DEST_FILE!" || echo "\n[FAIL] See output message above!"
+

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="statistics" basedir="." default="usage">
+	
+	<property name="module.name" value="${ant.project.name}" />
+	<property name="module.version" value="1.1.1" />
+	
+	<import as="build-web">
+		<url url="http://199.155.122.167/devconf/build-web.xml" />
+	</import>
+</project>

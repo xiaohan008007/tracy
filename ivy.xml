@@ -1,0 +1,49 @@
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+<ivy-module version="1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+	<info organisation="com.taotaosou.ttk" module="ttk-search-client" revision="2.0.5"
+		status="release" publication="20131210142742">
+		<description>ttk-search-client</description>
+	</info>
+	<configurations>
+		<conf name="compile" visibility="public" />
+		<conf name="test" visibility="private" extends="compile" />
+		<conf name="runtime" visibility="private" extends="compile" />
+	</configurations>
+	<publications>
+		<artifact name="ttk-search-client" type="jar" ext="jar" conf="compile" />
+		<artifact name="ttk-search-client" type="source" ext="jar" conf="compile" />
+		<artifact name="ttk-search-client" type="javadoc" ext="jar" conf="compile" />
+		<artifact name="ttk-search-client" type="distribution" ext="zip" conf="runtime" />
+		<artifact name="ttk-search-client" type="distribution" ext="war" conf="runtime" />
+	</publications>
+	<dependencies>
+		
+			<dependency org="com.google.guava" name="guava" rev="18.0"
+			changing="true" conf="compile,test,runtime->default(*)" />
+			
+			<dependency org="org.jboss.netty" name="netty" rev="3.2.7.Final"
+			changing="true" conf="compile,test,runtime->default(*)" />
+			
+			<dependency org="org.springframework" name="spring-test" rev="4.0.9.RELEASE"
+			changing="true" conf="compile,test,runtime->default(*)" />
+				<dependency org="org.springframework" name="spring-beans" rev="4.0.9.RELEASE"
+			changing="true" conf="compile,test,runtime->default(*)" />
+			<dependency org="junit" name="junit" rev="4.10"
+			changing="true" conf="compile,test,runtime->default(*)" />
+				<dependency org="com.taotaosou" name="tts-foundation-base" rev="1.0.0"
+			changing="true" conf="compile,test,runtime->default(*)" />
+				<dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.2"
+			changing="true" conf="compile,test,runtime->default(*)" />
+	</dependencies>
+</ivy-module>
